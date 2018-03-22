@@ -371,4 +371,7 @@ def replaceSubstring(line, newstr, ituple):
 
 if __name__ == '__main__':
 
-    normalize('sample_parsed.txt', 'sample_norm.txt')
+    filelist = glob.glob('source/chosun*_parsed.txt')
+
+    for filename in filelist:
+        normalize(filename, 'refined/chosun_norm.txt')
