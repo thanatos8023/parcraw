@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://news.nate.com/recent?mid=n0100
+BOARD=//*[@id="mediaSubnav"]/ul/li/a
+POST=//*[@id="newsContents"]/div[1]/div[2]/div/div/a
+PAGE_TAG=&page=%d
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=[class~=articleSubecjt]
+
+BODY=[id~=realArtcContents]
+
+REPLY=[class~=usertxt]

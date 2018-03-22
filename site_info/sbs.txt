@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://news.sbs.co.kr/news/newsflash.do?plink=NEW&cooper=SBSNEWSMAIN
+BOARD=//*[@id="subNewsLists"]/ul/li/a
+POST=//*[@id="container"]/div[2]/ul/li/div/div/a
+PAGE_TAG=&pageIdx=%d
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=[id~=vmNewsTitle]
+
+BODY=[class~=main_text]
+
+REPLY=[class~=livereArticleText]

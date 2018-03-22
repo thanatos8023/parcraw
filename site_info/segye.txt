@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://www.segye.com/main
+BOARD=//*[@id="header"]/div[3]/ul/li/a
+POST=//*[@id="content"]/div[1]/div[1]/div/dl[2]/dt/a
+PAGE_TAG=?curPage=%d
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=[class~=headline]
+
+BODY=[id~=article_txt]
+
+REPLY=[class~=reply-content]

@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://www.mt.co.kr
+BOARD=//*[@id="mt_header"]/div/div[2]/ul/li[1]/ul/li/a
+POST=//*[@id="content"]/ul/li/div/strong/a
+PAGE_TAG=&page=%d
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=title
+
+BODY=[id~=gisa_section]
+
+REPLY=[class~=livereArticleText]

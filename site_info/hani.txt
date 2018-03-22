@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://www.hani.co.kr
+BOARD=//*[@id="news-navi"]/ul[1]/li/div/table/tbody/tr/th/a
+POST=//*[@id="section-left-scroll-in"]/div[3]/div/div/h4/a
+PAGE_TAG=list%d.html
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=[class~=article-head]
+
+BODY=[class~=text]
+
+REPLY=[class~=livereArticleText]

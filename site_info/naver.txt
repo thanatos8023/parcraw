@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://news.naver.com
+BOARD=//*[@id="lnb"]/ul/li[2]/a
+POST=//*[@id="main_content"]/div[2]/ul/li/dl/dt/a
+PAGE_TAG=&page=%d
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=[id~=articleTitle]
+
+BODY=[id~=articleBodyContents]
+
+REPLY=[class~=u_cbox_contents]

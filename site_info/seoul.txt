@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://www.seoul.co.kr
+BOARD=/html/body/div/div/div/div/ul/li/a
+POST=//*[@id="list_area"]/dl/dd[1]/a
+PAGE_TAG=&page=%d
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=[title~=기사제목]
+
+BODY=[itemprop~=articleBody]
+
+REPLY=[class~=livereArticleText]

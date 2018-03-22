@@ -1,0 +1,13 @@
+# Crawling information
+ROOT_URL=http://www.chosun.com
+BOARD=//*[@id="csh_all_id"]/ul[1]/li[2]/a
+POST=//*[@id="list_area"]/dl/dt/a
+PAGE_TAG=?pn=%d
+SAVE_PATH=/Users/leejaeho/jupyter/parcraw/source/
+
+# Parsing information
+TITLE=[class~=news_title_text]
+
+BODY=[class~=par]
+
+REPLY=[class~=cmt_txt]
