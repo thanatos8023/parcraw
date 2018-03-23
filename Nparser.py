@@ -7,7 +7,12 @@ import glob
 
 
 def get_txt(xml_file_object):
-    source = xml_file_object.read()
+    source = xml_file_object.readline()
+    while source:
+        try:
+            source += xml_file_object.readline()
+        except Exception as e:
+            break
 
     soup = BeautifulSoup(source, 'lxml')
 
@@ -57,11 +62,11 @@ def save(text, path):
 
 
 def main():
-    file_list = glob.glob('source/naver*')
+    file_list = glob.glob('hankyung*')
 
     for filename in file_list:
         text = xml2txt(filename)
-        save(text, filename.replace('.xml', '_parsed.txt'))
+        save(text, filename.replace('.html', '_parsed.txt'))
 
 
 if __name__ == '__main__':
