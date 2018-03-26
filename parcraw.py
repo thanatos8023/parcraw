@@ -185,7 +185,7 @@ def crawler(site_information, max_page):
         # board_info : (url, name)
         board_name = board_info[1]
         if board_name == None or board_name == '':
-            board_name == '<UNK>'
+            board_name = '<UNK>'
         board_url = board_info[0]
         print('=' * 50)
         print(board_name, '(%s)' % board_url, 'Page crwaling starts.')
@@ -300,4 +300,4 @@ if __name__ == '__main__':
     site_information = get_site_information_from_file()
 
     # save_path = '/data/crawler/source/news/hani'
-    crawler(site_information, 2)
+    crawler(site_information, 10000)
