@@ -162,7 +162,7 @@ def parser_refiner(site_information, page_url, filename):
     parsed_filename = filename.replace('.xml', '_parsed.txt')
     Nparser.save(parsed_text, parsed_filename)
 
-    refiner.normalize(parsed_filename, 'refined_data/' + site_information['NAME'] + '_norm.txt')
+    refiner.normalize(parsed_filename, 'refined/' + site_information['NAME'] + '_norm.txt')
 
 
 def crawler(site_information, max_page):
