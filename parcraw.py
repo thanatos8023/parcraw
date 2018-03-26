@@ -184,6 +184,8 @@ def crawler(site_information, max_page):
     for board_info in boards:
         # board_info : (url, name)
         board_name = board_info[1]
+        if board_name == None or board_name == '':
+            board_name == '<UNK>'
         board_url = board_info[0]
         print('=' * 50)
         print(board_name, '(%s)' % board_url, 'Page crwaling starts.')
