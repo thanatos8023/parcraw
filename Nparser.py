@@ -16,6 +16,7 @@ def get_txt(xml_file_object):
         print('='*100)
         print(e)
         print('='*100)
+        return None
 
     soup = BeautifulSoup(source, 'lxml')
 
@@ -49,11 +50,15 @@ def xml2txt(path):
 
         for filename in filelist:
             with open(filename, 'r') as f:
-                text += get_txt(f)
+                temp = get_txt(f)
+                if temp:
+                    text += temp
             os.remove(filename)
     else:
         with open(path, 'r') as f:
-            text = get_txt(f)
+            temp = get_txt(f)
+            if temp:
+                text = temp
         os.remove(path)
 
     return text
