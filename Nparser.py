@@ -7,12 +7,15 @@ import glob
 
 
 def get_txt(xml_file_object):
-    source = xml_file_object.readline()
-    while source:
-        try:
-            source += xml_file_object.readline()
-        except Exception as e:
-            break
+    try:
+        source = xml_file_object.read()
+    except Exception as e:
+        print('HTML file reading error! We will skip this page.')
+        print('But source file (.xml) will be saved')
+        print('Detailed file error is written below')
+        print('='*100)
+        print(e)
+        print('='*100)
 
     soup = BeautifulSoup(source, 'lxml')
 
