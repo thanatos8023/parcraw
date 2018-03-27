@@ -5,7 +5,10 @@ import parcraw
 import os
 import glob
 
+from timeout_deco import timeout
 
+
+@timeout
 def get_txt(xml_file_object):
     try:
         source = xml_file_object.read()
@@ -70,11 +73,14 @@ def save(text, path):
 
 
 def main():
-    file_list = glob.glob('hankyung*')
+    file_list = glob.glob('donga*.html')
 
     for filename in file_list:
-        text = xml2txt(filename)
-        save(text, filename.replace('.html', '_parsed.txt'))
+        try:
+            text = xml2txt(filename)
+            save(text, filename.replace('.html', '_parsed.txt'))
+        except:
+            continue
 
 
 if __name__ == '__main__':

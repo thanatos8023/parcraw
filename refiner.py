@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import time
+from timeout_deco import timeout
 import re
 import glob
 import nltk
@@ -14,7 +14,7 @@ unit_rlist = ['킬로그램', '킬로미터', '센티미터']
 arpabet = nltk.corpus.cmudict.dict()
 c = ck.CMUToKorean
 
-
+@timeout
 def normalize(in_file, out_file):
     fin = open(in_file, 'rb')
     file_data = fin.read()
@@ -371,7 +371,10 @@ def replaceSubstring(line, newstr, ituple):
 
 if __name__ == '__main__':
 
-    filelist = glob.glob('source/chosun*_parsed.txt')
+    filelist = glob.glob('re_sample.txt')
 
     for filename in filelist:
-        normalize(filename, 'refined/chosun_norm.txt')
+        try:
+            normalize(filename, 'refined_data/donga_norm.txt')
+        except:
+            continue

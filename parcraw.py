@@ -7,7 +7,10 @@ import re
 from datetime import datetime
 from lxml import etree
 
+from timeout_deco import timeout
 
+
+@timeout(3)
 def request_get(url, root=''):
     sess = requests.Session()
     sess.headers[
@@ -23,6 +26,7 @@ def request_get(url, root=''):
     return req
 
 
+@timeout(5)
 def _get_etree(url, xpath, site_info):
     # page_list
     # [(url1, name1),
@@ -78,10 +82,12 @@ def _get_etree(url, xpath, site_info):
     return page_list
 
 
+@timeout(1)
 def page(url, page_tag, numofpage):
     return url + (page_tag % numofpage)
 
 
+@timeout(3)
 def get_xml(url, filename, site_info, recent_file_list):
     # filename = site_info['NAME'] + url.split(site_info['PAGE_TAG'])[-1].replace('/', '_') + '.xml'
     if not filename in recent_file_list:
@@ -110,6 +116,7 @@ def get_xml(url, filename, site_info, recent_file_list):
         return 0, 'Already crawled'
 
 
+@timeout(2)
 def get_recent_file_list(site_information):
     # This function will list up all items in Source folder.
     # This list will be used for determining the crawled page already saved or not.
@@ -151,12 +158,14 @@ def get_recent_file_list(site_information):
 #        print(e)
 
 
+@timeout(2)
 def put_recent_file_list(site_information, url, filename):
     list_file_name = '%s%s_list.txt' % (site_information['SAVE_PATH'], site_information['NAME'])
     with open(list_file_name, 'a') as f:
         f.write('%s\t%s\n' % (filename, url))
 
 
+@timeout
 def parser_refiner(site_information, page_url, filename):
     parsed_text = Nparser.xml2txt(filename)
     parsed_filename = filename.replace('.xml', '_parsed.txt')
