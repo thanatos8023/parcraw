@@ -165,7 +165,6 @@ def put_recent_file_list(site_information, url, filename):
         f.write('%s\t%s\n' % (filename, url))
 
 
-@timeout
 def parser_refiner(site_information, page_url, filename):
     parsed_text = Nparser.xml2txt(filename)
     parsed_filename = filename.replace('.xml', '_parsed.txt')
@@ -255,8 +254,9 @@ def crawler(site_information, max_page):
                     try:
                         parser_refiner(site_information, page_url, filepath)
                         nOfEmptyPostPages = 0
-                    except Exception:
+                    except Exception as e:
                         print('parser() ERROR!!!')
+                        print(e)
 
                 # If there is no new post in this page,
                 # then we will skip this board. We already crawled all new post of this board.
@@ -309,4 +309,4 @@ if __name__ == '__main__':
     site_information = get_site_information_from_file()
 
     # save_path = '/data/crawler/source/news/hani'
-    crawler(site_information, 10000)
+    crawler(site_information, 2)
