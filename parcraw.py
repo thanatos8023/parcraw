@@ -165,10 +165,7 @@ def put_recent_file_list(site_information, url, filename):
         f.write('%s\t%s\n' % (filename, url))
 
 
-<<<<<<< HEAD
-=======
 @timeout(10)
->>>>>>> 19560b71cb9f125c2adfdf3bde981be66d745051
 def parser_refiner(site_information, page_url, filename):
     parsed_text = Nparser.xml2txt(filename)
     parsed_filename = filename.replace('.xml', '_parsed.txt')
