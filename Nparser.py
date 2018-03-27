@@ -8,7 +8,7 @@ import glob
 from timeout_deco import timeout
 
 
-@timeout
+@timeout(10)
 def get_txt(xml_file_object):
     try:
         source = xml_file_object.read()

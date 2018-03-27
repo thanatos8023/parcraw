@@ -14,7 +14,7 @@ unit_rlist = ['킬로그램', '킬로미터', '센티미터']
 arpabet = nltk.corpus.cmudict.dict()
 c = ck.CMUToKorean
 
-@timeout
+@timeout(10)
 def normalize(in_file, out_file):
     fin = open(in_file, 'rb')
     file_data = fin.read()
