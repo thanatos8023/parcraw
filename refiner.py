@@ -371,10 +371,10 @@ def replaceSubstring(line, newstr, ituple):
 
 if __name__ == '__main__':
 
-    filelist = glob.glob('re_sample.txt')
+    filelist = glob.glob('/home/crawadmin/pdf2txt/*.txt')
 
     for filename in filelist:
         try:
-            normalize(filename, 'refined_data/donga_norm.txt')
+            normalize(filename, 'refined/concile_19th_norm.txt')
         except:
             continue
