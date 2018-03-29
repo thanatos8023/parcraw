@@ -212,6 +212,8 @@ def crawler(site_information, max_page):
                     page_url = page(board_url, site_information['PAGE_TAG'], 20 * i + 1)
                 elif site_information['NAME'] == 'hani':
                     page_url = page(board_url.replace('home01.html', ''), site_information['PAGE_TAG'], i + 1)
+                elif site_information['NAME'] == 'mlbpark':
+                    page_url = page(board_url, site_information['PAGE_TAG'], 30 * i + 1)
                 else:
                     page_url = page(board_url, site_information['PAGE_TAG'], i + 1)
 

@@ -76,9 +76,20 @@ def normalize(in_file, out_file):
             if oneline[:2] == '//':
                 continue
 
+            ################## 제외 목록 #######################
+            # 1. 괄호 안 부가 설명
+            # 2. 이메일
+            # 3. 웹주소
+            # 4. 전화번호
+            ##################################################
+            oneline = re.sub(u'\(([0-9a-zA-Z가-힣一-龥豈-龎/]+\s*)+\)', u'', oneline)  # 괄호 안 부가 설명은 삭제
+            oneline = re.sub(u'[A-Za-z0-9-_.]+@[A-Za-z]+(\.[A-Za-z]+)+', u'', oneline)  # 이메일
+            oneline = re.sub(u'(http)*s*(://)*[A-Za-z가-힣]+(\.[A-Za-z]+)+(/[?&.=!A-Za-z]+)*', u'', oneline)  # 웹주소
+            oneline = re.sub(u'\({0,1}[0-9]+\){0,1}([-.~ ][0-9]+)+', u'', oneline)  # 전화번호
+
             oneline = readUnit(oneline)  # 단위 읽기(%때문에 기호 제거 전에 처리)
             oneline = readNumber(oneline)  # 숫자 읽기
-            oneline = re.sub(u'\(([0-9a-zA-Z가-힣一-龥豈-龎/]+\s*)+\)', u'', oneline)  # 괄호 안 부가 설명은 삭제
+
 
             # 숫자, 영어, 한글, 한문이 아니면 제외
             oneline = re.sub(u'[\'\"‘’“”]', u'', oneline)  # 따옴표 삭제
