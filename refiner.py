@@ -81,11 +81,13 @@ def normalize(in_file, out_file):
             # 2. 이메일
             # 3. 웹주소
             # 4. 전화번호
+            # 5. 인스타, 트위터 DM
             ##################################################
             oneline = re.sub(u'\(([0-9a-zA-Z가-힣一-龥豈-龎/]+\s*)+\)', u'', oneline)  # 괄호 안 부가 설명은 삭제
             oneline = re.sub(u'[A-Za-z0-9-_.]+@[A-Za-z]+(\.[A-Za-z]+)+', u'', oneline)  # 이메일
             oneline = re.sub(u'(http)*s*(://)*[A-Za-z가-힣]+(\.[A-Za-z]+)+(/[?&.=!A-Za-z]+)*', u'', oneline)  # 웹주소
             oneline = re.sub(u'\({0,1}[0-9]+\){0,1}([-.~ ][0-9]+)+', u'', oneline)  # 전화번호
+            oneline = re.sub(u'((@[A-Za-z]+[A-Za-z-_.]+)|[A-Za-z]+[A-Za-z-_.]+@)', u'', oneline)  # 인스타, 트위터 DM
 
             oneline = readUnit(oneline)  # 단위 읽기(%때문에 기호 제거 전에 처리)
             oneline = readNumber(oneline)  # 숫자 읽기
