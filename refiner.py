@@ -388,6 +388,6 @@ if __name__ == '__main__':
 
     for filename in filelist:
         try:
-            normalize(filename, 'refined/concile_19th__norm_v101.txt')
+            normalize(filename, 'refined/concile_17-19_v103.txt')
         except:
             continue

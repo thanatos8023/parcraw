@@ -1,3 +1,5 @@
+#!/usr/lib/python3.5
+
 import os
 import requests
 import argparse
