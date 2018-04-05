@@ -195,10 +195,14 @@ def crawler(site_information, max_page):
 
     for board_info in boards:
         # board_info : (url, name)
+        board_url = board_info[0]
         board_name = board_info[1]
         if board_name == None or board_name == '':
-            board_name = '<UNK>'
-        board_url = board_info[0]
+            k = -1
+            while not board_name:
+                board_name = board_url.split('/')[k]
+                k -= 1
+
         print('=' * 50)
         print(board_name, '(%s)' % board_url, 'Page crwaling starts.')
 
@@ -294,7 +298,7 @@ def get_site_information_from_file():
     parser.add_argument('path', help='site infromation file (*.site) path', type=str)
     args = parser.parse_args()
 
-    with open(os.getcwd() + '/' + args.path, 'r', encoding='utf-8') as f:
+    with open(args.path, 'r', encoding='utf-8') as f:
         l = f.readlines()
 
     site_information = {'NAME': args.path.split('/')[-1].replace('.txt', '')}
@@ -315,4 +319,4 @@ if __name__ == '__main__':
     site_information = get_site_information_from_file()
 
     # save_path = '/data/crawler/source/news/hani'
-    crawler(site_information, 10000)
+    crawler(site_information, 2)

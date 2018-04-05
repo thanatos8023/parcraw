@@ -107,10 +107,14 @@ def normalize(in_file, out_file):
                 oneline = hanja.translate(oneline, 'substitution')  # 한자 읽기
             oneline = readAlphabet(oneline, 'ita')  # 영어 읽기
 
+            oneline = re.sub(u'\.', u'', oneline)
+
+
             # 빈칸 처리
             oneline = re.sub(u' +', u' ', oneline)
             oneline = re.sub(u'^ ', u'', oneline)
             oneline = re.sub(u' $', u'', oneline)
+
 
             if len(oneline) > 2000:
                 print(oneline)
