@@ -135,7 +135,7 @@ def get_recent_file_list(site_information):
             result.append(file_info.split('\t')[1])
         list_file.close()
 
-        return file_list
+        return result
     except:
         try:
             list_file = open(site_information['SAVE_PATH'] + file_name, 'w')
