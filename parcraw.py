@@ -1,4 +1,4 @@
-#!/bin/lib/python3.5
+#!/usr/lib/python3.5
 
 import os
 import requests
@@ -321,4 +321,4 @@ if __name__ == '__main__':
     site_information = get_site_information_from_file()
 
     # save_path = '/data/crawler/source/news/hani'
-    crawler(site_information, 2)
+    crawler(site_information, 10000)
