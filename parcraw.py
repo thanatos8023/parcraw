@@ -176,7 +176,7 @@ def parser_refiner(site_information, page_url, filename):
     now = datetime.now()
     date = now.strftime('%Y%m%d')
 
-    refiner.normalize(parsed_filename, 'refined/' + site_information['NAME'] + '_%s_norm.txt' % date)
+    refiner.normalize(parsed_filename, '/home/crawadmin/parcraw/refined/' + site_information['NAME'] + '_%s_norm.txt' % date)
 
 
 def crawler(site_information, max_page):
