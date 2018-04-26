@@ -9,7 +9,7 @@ from timeout_deco import timeout
 
 
 @timeout(10)
-def get_txt(xml_file_object):
+def get_txt(xml_file_object, site_path):
     try:
         source = xml_file_object.read()
     except Exception as e:
@@ -23,7 +23,7 @@ def get_txt(xml_file_object):
 
     soup = BeautifulSoup(source, 'lxml')
 
-    site_info = parcraw.get_site_information_from_file()
+    site_info = parcraw.get_site_information_from_file(site_path)
 
     title = soup.select(site_info['TITLE'])
     body = soup.select(site_info['BODY'])
@@ -45,7 +45,7 @@ def get_txt(xml_file_object):
     return text
 
 
-def xml2txt(path):
+def xml2txt(path, site_path):
     #text = url + '\n\n'
     text = ''
     if os.path.isdir(path):
@@ -53,13 +53,13 @@ def xml2txt(path):
 
         for filename in filelist:
             with open(filename, 'r') as f:
-                temp = get_txt(f)
+                temp = get_txt(f, site_path)
                 if temp:
                     text += temp
             os.remove(filename)
     else:
         with open(path, 'r') as f:
-            temp = get_txt(f)
+            temp = get_txt(f, site_path)
             if temp:
                 text = temp
         os.remove(path)

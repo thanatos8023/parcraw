@@ -77,6 +77,10 @@ def _get_etree(url, xpath, site_info):
             subpage_url = site_info['ROOT_URL'] + '/' + subpage_url
             page_list.append((subpage_url, subpage_name))
 
+        elif subpage_url[:8] == 'view.asp':
+            subpage_url = site_info['ROOT_URL'] + '/pages/' + subpage_url
+            page_list.append((subpage_url, subpage_name))
+
         else:
             subpage_url = site_info['ROOT_URL'] + subpage_url
             page_list.append((subpage_url, subpage_name))
@@ -90,10 +94,10 @@ def page(url, page_tag, numofpage):
 
 
 @timeout(3)
-def get_xml(url, filename, site_info, recent_file_list):
+def get_xml(url, filename, site_info, recent_file_list, source_dir):
     # filename = site_info['NAME'] + url.split(site_info['PAGE_TAG'])[-1].replace('/', '_') + '.xml'
     if not filename in recent_file_list:
-        put_recent_file_list(site_info, url, filename)
+        put_recent_file_list(site_info, url, filename, source_dir)
 
         req = request_get(url)
 
@@ -109,22 +113,22 @@ def get_xml(url, filename, site_info, recent_file_list):
         if site_info['NAME'] == 'herald' or site_info['NAME'] == 'hani':
             req.encoding = 'ISO-639-1'
 
-        with open(site_info['SAVE_PATH'] + filename, 'w') as f:
+        with open(source_dir + filename, 'w') as f:
             f.write(req.text)
             print('%s (%s) was crawled!!' % (filename, url))
 
-        return 1, site_info['SAVE_PATH'] + filename
+        return 1, source_dir + filename
     else:
         return 0, 'Already crawled'
 
 
 @timeout(2)
-def get_recent_file_list(site_information):
+def get_recent_file_list(site_information, source_dir):
     # This function will list up all items in Source folder.
     # This list will be used for determining the crawled page already saved or not.
     file_name = site_information['NAME'] + '_list.txt'
     try:
-        list_file = open(site_information['SAVE_PATH'] + file_name, 'r')
+        list_file = open(source_dir + file_name, 'r')
         print('File list of %s was loaded' % site_information['NAME'])
         file_list = list_file.read()
         file_info_list = file_list.split('\n')
@@ -138,14 +142,14 @@ def get_recent_file_list(site_information):
         return result
     except:
         try:
-            list_file = open(site_information['SAVE_PATH'] + file_name, 'w')
+            list_file = open(source_dir + file_name, 'w')
             print('File list of %s was maden' % site_information['NAME'])
             list_file.close()
 
             return []
         except:
-            os.mkdir(site_information['SAVE_PATH'])
-            list_file = open(site_information['SAVE_PATH'] + file_name, 'w')
+            os.mkdir(source_dir)
+            list_file = open(source_dir + file_name, 'w')
             print('File list of %s was maden' % site_information['NAME'])
             list_file.close()
 
@@ -161,14 +165,14 @@ def get_recent_file_list(site_information):
 
 
 @timeout(2)
-def put_recent_file_list(site_information, url, filename):
-    list_file_name = '%s%s_list.txt' % (site_information['SAVE_PATH'], site_information['NAME'])
+def put_recent_file_list(site_information, url, filename, source_dir):
+    list_file_name = '%s%s_list.txt' % (source_dir, site_information['NAME'])
     with open(list_file_name, 'a') as f:
         f.write('%s\t%s\n' % (filename, url))
 
 
-def parser_refiner(site_information, page_url, filename):
-    parsed_text = Nparser.xml2txt(filename)
+def parser_refiner(site_information, filename, args):
+    parsed_text = Nparser.xml2txt(filename, args.site)
     parsed_filename = filename.replace('.xml', '_parsed.txt')
     Nparser.save(parsed_text, parsed_filename)
 
@@ -176,17 +180,17 @@ def parser_refiner(site_information, page_url, filename):
     now = datetime.now()
     date = now.strftime('%Y%m%d')
 
-    refiner.normalize(parsed_filename, '/home/crawadmin/parcraw/refined/' + site_information['NAME'] + '_%s_norm.txt' % date)
+    refiner.normalize(parsed_filename, args.result + site_information['NAME'] + '_%s_norm.txt' % date)
 
 
-def crawler(site_information, max_page):
+def crawler(site_information, args):
     # _get_etree() returns a list of tuples.
     # The tuple consists of (url, name)
     ### Example ###
     # boards_info = [(url1, name1), (url2, name2), (url3, name3), ... ]
     boards = _get_etree(site_information['ROOT_URL'], site_information['BOARD'], site_information)
     # 이전에 긁어왔던 페이지를 다시 긁어오지 않기 위한 변수
-    r_file_list = get_recent_file_list(site_information)
+    r_file_list = get_recent_file_list(site_information, args.source)
     # 이번에 긁었던 페이지를 다시 긁지 않기 위한 변수
     crawled_posts = []
     # 크롤링 날짜
@@ -210,7 +214,7 @@ def crawler(site_information, max_page):
 
         nOfEmptyPostPages = 0
 
-        for i in range(max_page):
+        for i in range(args.nofpages):
             try:
                 print('---------------', i + 1, 'th page...')
 
@@ -245,7 +249,7 @@ def crawler(site_information, max_page):
                         continue
                     else:
                         try:
-                            num, filepath = get_xml(post_url, filename, site_information, r_file_list)
+                            num, filepath = get_xml(post_url, filename, site_information, r_file_list, args.source)
                             crawled_posts.append(post_url)
                         except:
                             print('get_xml() ERROR!!')
@@ -264,7 +268,7 @@ def crawler(site_information, max_page):
                     nOfPost += num
 
                     try:
-                        parser_refiner(site_information, page_url, filepath)
+                        parser_refiner(site_information, filepath, args)
                         nOfEmptyPostPages = 0
                     except Exception as e:
                         print('parser() ERROR!!!')
@@ -294,16 +298,12 @@ def crawler(site_information, max_page):
     return numOfCrawledPosts
 
 
-def get_site_information_from_file():
-    # FLAG parser settings
-    parser = argparse.ArgumentParser()
-    parser.add_argument('path', help='site infromation file (*.site) path', type=str)
-    args = parser.parse_args()
+def get_site_information_from_file(site_path):
 
-    with open(args.path, 'r', encoding='utf-8') as f:
+    with open(site_path, 'r', encoding='utf-8') as f:
         l = f.readlines()
 
-    site_information = {'NAME': args.path.split('/')[-1].replace('.txt', '')}
+    site_information = {'NAME': site_path.split('/')[-1].replace('.txt', '')}
 
     for line in l:
         try:
@@ -318,7 +318,15 @@ def get_site_information_from_file():
 
 
 if __name__ == '__main__':
-    site_information = get_site_information_from_file()
+    # FLAG parser settings
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--site', help='site infromation file (*.site) path', type=str)
+    parser.add_argument('-r', '--result', help='refined file (*_refined.txt) path', type=str)
+    parser.add_argument('-d', '--source', help='source file (*_parsed.txt) directory path', type=str)
+    parser.add_argument('-n', '--nofpages', help='number of pages to crawling', type=int)
+    args = parser.parse_args()
+
+    site_information = get_site_information_from_file(args.site)
 
     # save_path = '/data/crawler/source/news/hani'
-    crawler(site_information, 10000)
+    crawler(site_information, args)
