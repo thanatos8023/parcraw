@@ -77,6 +77,18 @@ def _get_etree(url, xpath, site_info):
             subpage_url = site_info['ROOT_URL'] + '/' + subpage_url
             page_list.append((subpage_url, subpage_name))
 
+        elif not subpage_url[:4] == '?id=' and site_info['NAME'] == 'tourdemonde':
+            subpage_url = site_info['ROOT_URL'].replace('/magazine.asp', subpage_url)
+            page_list.append((subpage_url, subpage_name))
+
+        elif subpage_url[:12] == '?id=MAGAZINE':
+            subpage_url = 'http://www.tourdemonde.com/fsboard/fsboard.asp' + subpage_url
+            page_list.append((subpage_url, subpage_name))
+
+        elif subpage_url[:8] == '/fsboard':
+            subpage_url = 'http://www.tourdemonde.com' + subpage_url
+            page_list.append((subpage_url, subpage_name))
+
         elif subpage_url[:8] == 'view.asp':
             subpage_url = site_info['ROOT_URL'] + '/pages/' + subpage_url
             page_list.append((subpage_url, subpage_name))
