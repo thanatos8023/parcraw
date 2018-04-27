@@ -106,10 +106,10 @@ def page(url, page_tag, numofpage):
 
 
 @timeout(3)
-def get_xml(url, filename, site_info, recent_file_list, source_dir):
+def get_xml(url, filename, site_info, recent_url_list, source_dir):
     # filename = site_info['NAME'] + url.split(site_info['PAGE_TAG'])[-1].replace('/', '_') + '.xml'
-    if not filename in recent_file_list:
-        put_recent_file_list(site_info, url, filename, source_dir)
+    if not url in recent_url_list:
+        put_recent_url_list(site_info, url, filename, source_dir)
 
         req = request_get(url)
 
@@ -135,13 +135,13 @@ def get_xml(url, filename, site_info, recent_file_list, source_dir):
 
 
 @timeout(2)
-def get_recent_file_list(site_information, source_dir):
+def get_recent_url_list(site_name, source_dir):
     # This function will list up all items in Source folder.
     # This list will be used for determining the crawled page already saved or not.
-    file_name = site_information['NAME'] + '_list.txt'
+    file_name = site_name + '_list.txt'
     try:
         list_file = open(source_dir + file_name, 'r')
-        print('File list of %s was loaded' % site_information['NAME'])
+        print('File list of %s was loaded' % site_name)
         file_list = list_file.read()
         file_info_list = file_list.split('\n')
         result = []
@@ -155,14 +155,14 @@ def get_recent_file_list(site_information, source_dir):
     except:
         try:
             list_file = open(source_dir + file_name, 'w')
-            print('File list of %s was maden' % site_information['NAME'])
+            print('File list of %s was maden' % site_name)
             list_file.close()
 
             return []
         except:
             os.mkdir(source_dir)
             list_file = open(source_dir + file_name, 'w')
-            print('File list of %s was maden' % site_information['NAME'])
+            print('File list of %s was maden' % site_name)
             list_file.close()
 
             return []
@@ -177,7 +177,7 @@ def get_recent_file_list(site_information, source_dir):
 
 
 @timeout(2)
-def put_recent_file_list(site_information, url, filename, source_dir):
+def put_recent_url_list(site_information, url, filename, source_dir):
     list_file_name = '%s%s_list.txt' % (source_dir, site_information['NAME'])
     with open(list_file_name, 'a') as f:
         f.write('%s\t%s\n' % (filename, url))
@@ -202,7 +202,7 @@ def crawler(site_information, args):
     # boards_info = [(url1, name1), (url2, name2), (url3, name3), ... ]
     boards = _get_etree(site_information['ROOT_URL'], site_information['BOARD'], site_information)
     # 이전에 긁어왔던 페이지를 다시 긁어오지 않기 위한 변수
-    r_file_list = get_recent_file_list(site_information, args.source)
+    r_file_list = get_recent_url_list(site_information['NAME'], args.source)
     # 이번에 긁었던 페이지를 다시 긁지 않기 위한 변수
     crawled_posts = []
     # 크롤링 날짜
